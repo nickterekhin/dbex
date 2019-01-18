@@ -1,0 +1,3 @@
+/Volumes/Data/work/CC/c2/w6/db_ex/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Volumes/Data/work/CC/c2/w6/db_ex/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Volumes/Data/work/CC/c2/w6/db_ex/cmake-build-debug/CMakeFiles/db_ex.dir
