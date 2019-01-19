@@ -4,7 +4,7 @@ using namespace std;
 
 void Database::Add(const Date& date, const string &event){
 
-    if (event.empty()) {
+    if (event.size()==0) {
         return;
     }
     auto res =  _events[date].insert(event);
@@ -13,6 +13,7 @@ void Database::Add(const Date& date, const string &event){
 
 }
 string Database::Last(const Date &date) const{
+    //throw invalid_argument("");
     auto it = _events.upper_bound(date);
     if(it!=_events.begin()){
         if(!(--it)->second.empty()) {
@@ -21,8 +22,9 @@ string Database::Last(const Date &date) const{
             return _event.str();
         }
     }
-    return "No entries";
-    
+    throw invalid_argument("No entries");
+    //return "No entries";
+
 }
 
 void Database::Print(ostream& os) const
@@ -31,7 +33,7 @@ void Database::Print(ostream& os) const
     {
         for(auto e:_index.at(event.first))
         {
-            os<<make_pair(event.first,(*e))<<endl;
+            os<<event.first<<" "<<(*e)<<endl;
         }
     }
 }
@@ -45,14 +47,15 @@ int Database::RemoveIf(function<bool(const Date& date, const string& event)> pre
         });
         qty += it_events_to_remove - _index.at(it->first).begin();
 
-
-        if(it_events_to_remove!=_index.at(it->first).begin()) {
-            it->second.erase(*_index.at(it->first).begin(), next(*prev(it_events_to_remove)));
-            _index.at(it->first).erase(_index.at(it->first).begin(), it_events_to_remove);
-
+        for(auto it_sub = _index.at(it->first).begin();it_sub!=it_events_to_remove;++it_sub)
+        {
+            it->second.erase(*it_sub);
         }
 
-        if(it->second.empty() && _index.at(it->first).empty()) {
+        _index.at(it->first).erase(_index.at(it->first).begin(), it_events_to_remove);
+
+
+        if(it->second.empty()) {
             _index.erase(it->first);
             it = _events.erase(it);
         }
@@ -64,25 +67,22 @@ int Database::RemoveIf(function<bool(const Date& date, const string& event)> pre
  return qty;
 }
 
-set<pair<Date,string>> Database::FindIf(function<bool(const Date& date, const string& event)> predicate) const{
+vector<string> Database::FindIf(function<bool(const Date& date, const string& event)> predicate) const{
 
-    set<pair<Date,string>> res;
-    for(auto it = _events.begin();it!=_events.end();++it)
+    vector<string> res;
+    for(auto it = _index.begin();it!=_index.end();++it)
     {
         for(auto it_event = it->second.begin();it_event!=it->second.end();++it_event)
         {
-            if(predicate(it->first,*it_event))
+            if(predicate(it->first,**it_event))
             {
-
-                res.insert(make_pair(it->first,*it_event));
+                stringstream _event;
+                _event<<it->first<<" "<<**it_event;
+                res.push_back(_event.str());
             }
         }
 
     }
 
  return res;
-}
-ostream& operator <<(ostream& stream,const pair<const Date,const string> &date_event){
-        stream <<date_event.first<<" "<<date_event.second;
-    return stream;
 }

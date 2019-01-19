@@ -15,9 +15,12 @@ string ParseEvent(istream& is) {
     string event;
     if(getline(is,event))
     {
-        auto it = event.find_first_not_of(" \t\n\r");
+        event.erase(event.begin(), std::find_if(event.begin(), event.end(), [](int ch) {
+            return !std::isspace(ch);
+        }));
+        /*auto it = event.find_first_not_of(" \t\n\r");
         if(it!=string::npos)
-            event.erase(0,it);
+            event.erase(0,it);*/
         return event;
     }
 
@@ -96,7 +99,6 @@ void TestParseEvent() {
 
 void TestAll() {
     TestRunner tr;
-    tr.RunTest(TestParseEvent, "TestParseEvent");
+   tr.RunTest(TestParseEvent, "TestParseEvent");
     tr.RunTest(TestParseCondition, "TestParseCondition");
-    tr.RunTest(TestDatabase,"Test DataBase");
 }

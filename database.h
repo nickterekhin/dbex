@@ -3,6 +3,7 @@
 #include <iostream>
 #include <map>
 #include <set>
+#include <vector>
 #include <iomanip>
 #include <deque>
 #include <functional>
@@ -18,7 +19,7 @@ public:
 
     int RemoveIf(function<bool(const Date& date, const string& event)> predicate);
 
-    set<pair<Date,string>> FindIf(function<bool(const Date& date, const string& event)> predicate) const;
+    vector<string> FindIf(function<bool(const Date& date, const string& event)> predicate) const;
 
     string Last(const Date &date) const;
 
@@ -29,4 +30,3 @@ private:
     map<Date,deque<set<string>::const_iterator>> _index;
 };
 
-ostream& operator <<(ostream& stream,const pair<const Date,const string> &date_event);

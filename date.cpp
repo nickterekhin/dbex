@@ -11,6 +11,8 @@ using namespace std;
     Date::Date(int year,int month,int day)
     {
         _year = year;
+        if (year < 0 || year > 9999)
+            throw invalid_argument("Year value is invalid: " + to_string(_month));
         if (month < 1 || month > 12)
             throw invalid_argument("Month value is invalid: " + to_string(_month));
         _month = month;
@@ -81,7 +83,6 @@ Date ParseDate(istream &is){
 
     if (!ok) {
         throw invalid_argument("Incorrect date format:"+date);
-        //return {0,0,0};
     }
     return {year, month, day};
     }

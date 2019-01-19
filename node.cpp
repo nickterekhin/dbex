@@ -40,19 +40,19 @@ EventComparisonNode::EventComparisonNode(const Comparison &cmp, const string &ev
 }
 
 bool EventComparisonNode::Evaluate(const Date &date,const string &s) const {
-    int c = s.compare(_event);
+
     if(_cmp==Comparison::Equal)
-        return c==0;
+        return s==_event;
     if(_cmp==Comparison::NotEqual)
-        return c!=0;
+        return s!=_event;
     if(_cmp==Comparison::Less)
-        return c<0;
+        return s<_event;
     if(_cmp==Comparison::Greater)
-        return c>0;
+        return s>_event;
     if(_cmp==Comparison::LessOrEqual)
-        return c<0 || c==0;
+        return s<=_event;
     if(_cmp==Comparison::GreaterOrEqual)
-        return c>0 || c==0;
+        return s>=_event;
 
 
     return false;
