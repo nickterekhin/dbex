@@ -13,7 +13,6 @@ void Database::Add(const Date& date, const string &event){
 
 }
 string Database::Last(const Date &date) const{
-    //if(date==Date(0,0,0))throw invalid_argument("No entries");
     auto it = _events.upper_bound(date);
     if(it!=_events.begin()){
         if(!(--it)->second.empty()) {
@@ -21,10 +20,9 @@ string Database::Last(const Date &date) const{
             _event<<it->first<<" "<<(*_index.at(it->first).back());
             return _event.str();
         }
-        if(date==Date(0,0,0))throw invalid_argument("No entries");
     }
     return "No entries";
-    //throw invalid_argument("No entries");
+    
 }
 
 void Database::Print(ostream& os) const
