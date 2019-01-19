@@ -1,11 +1,9 @@
-//
-// Created by Terekhin on 12/01/2019.
-//
-
+#include "date.h"
 #include <string>
 #include <iomanip>
-#include "date.h"
 #include <vector>
+#include <stdexcept>
+
 
 using namespace std;
 
@@ -83,6 +81,7 @@ Date ParseDate(istream &is){
 
     if (!ok) {
         throw invalid_argument("Incorrect date format:"+date);
+        //return {0,0,0};
     }
     return {year, month, day};
     }

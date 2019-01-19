@@ -21,9 +21,10 @@ string Database::Last(const Date &date) const{
             _event<<it->first<<" "<<(*_index.at(it->first).back());
             return _event.str();
         }
-
+        if(date==Date(0,0,0))throw invalid_argument("No entries");
     }
     return "No entries";
+    //throw invalid_argument("No entries");
 }
 
 void Database::Print(ostream& os) const
@@ -83,7 +84,7 @@ set<pair<Date,string>> Database::FindIf(function<bool(const Date& date, const st
 
  return res;
 }
-ostream& operator <<(ostream& stream,pair<const Date&,const string> date_event){
+ostream& operator <<(ostream& stream,const pair<const Date,const string> &date_event){
         stream <<date_event.first<<" "<<date_event.second;
     return stream;
 }

@@ -2,7 +2,6 @@
 
 using namespace std;
 
-//LogicalOperationNode definition
 LogicalOperationNode::LogicalOperationNode(const LogicalOperation &op, const shared_ptr<Node> &left,const shared_ptr<Node> &right):_op(op),_left(left),_right(right){
 
 }
@@ -15,7 +14,6 @@ bool LogicalOperationNode::Evaluate(const Date &date,const string &s) const {
 
     return _left->Evaluate(date,s) || _right->Evaluate(date,s);
 }
-//Date class definition
 DateComparisonNode::DateComparisonNode(const Comparison &cmp, const Date &date):_date(date) {
     _cmp = cmp;
 }
@@ -37,7 +35,6 @@ bool DateComparisonNode::Evaluate(const Date &date,const string &s) const {
     return false;
 }
 
-//EventComparisonNode definition
 EventComparisonNode::EventComparisonNode(const Comparison &cmp, const string &event):_event(event) {
     _cmp = cmp;
 }

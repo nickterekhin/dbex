@@ -1,11 +1,8 @@
-//
-// Created by Terekhin on 12/01/2019.
-//
 #pragma once
 #include <sstream>
-
-
+#include <iostream>
 using namespace std;
+
 class Date {
 private:
     int _year;

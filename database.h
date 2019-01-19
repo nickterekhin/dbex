@@ -7,6 +7,8 @@
 #include <deque>
 #include <functional>
 #include <iterator>
+#include <algorithm>
+#include <string>
 
 using namespace std;
 class Database {
@@ -27,4 +29,4 @@ private:
     map<Date,deque<set<string>::const_iterator>> _index;
 };
 
-ostream& operator <<(ostream& stream,pair<const Date&,const string> date_event);
+ostream& operator <<(ostream& stream,const pair<const Date,const string> &date_event);
