@@ -16,7 +16,7 @@ using namespace std;
         if (month < 1 || month > 12)
             throw invalid_argument("Month value is invalid: " + to_string(_month));
         _month = month;
-        if (day < 1 || day > 31)
+       if (day < 1 || day > 31)
             throw invalid_argument("Day value is invalid: " + to_string(_day));
         _day=day;
 
@@ -82,7 +82,7 @@ Date ParseDate(istream &is){
     ok = ok && date_stream.eof();
 
     if (!ok) {
-        throw invalid_argument("No entries");
+        throw invalid_argument("Incorrect date format:"+date);
     }
-    return Date(year, month, day);
+    return {year, month, day};
     }

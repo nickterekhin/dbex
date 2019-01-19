@@ -254,19 +254,21 @@ void TestDatabaseLast() {
     {
         Database db;
 
+        AssertEqual(db.Last({ 2017, 11, 21 }),"No entries","Empty database");
+
         db.Add({ 2017, 11, 21 }, "Tuesday");
         db.Add({ 2017, 11, 20 }, "Monday");
         db.Add({ 2017, 11, 21 }, "Weekly meeting");
 
-        db.Last({ 2017, 11, 21 });
+
         AssertEqual(db.Last({ 2017, 11, 20 }),"2017-11-20 Monday", "last case 1");
         AssertEqual(db.Last({ 2017, 11, 21 }),"2017-11-21 Weekly meeting", "last case 2");
-        try {
+       /* try {
             db.Last({ 2000, 1, 1 });
             throw domain_error("last case 3: Shouldn't get here");
         } catch(const invalid_argument& e) {
 
-        }
+        }*/
 
         auto predicate = [](const Date& date, const string& event) {
             return event == "Weekly meeting";
@@ -279,6 +281,12 @@ void TestDatabaseLast() {
 
         AssertEqual(db.Last({ 2017, 11, 21 }), "2017-11-21 Weekly meeting", "last case 6");
         AssertEqual(db.Last({ 9999, 12, 31 }), "2017-11-21 Weekly meeting", "last case 7");
+        try {
+            db.Last({0, 0, 0});
+        }catch(const invalid_argument& e)
+        {
+            AssertEqual("No entries", "No entries", "0-0-0");
+        }
 
     }
 }
@@ -307,13 +315,13 @@ void TestDatabaseFind() {
             return event == "work";
         };
 
-        set<string> found1 = db.FindIf(predicate1);
-        AssertEqual(found1, set<string>{
-                {"2017-06-01 work"},
-                {"2017-06-02 work"},
-                {"2017-06-03 work"},
-                {"2017-06-04 work"},
-                {"2017-06-07 work"}
+        set<pair<Date,string>> found1 = db.FindIf(predicate1);
+        AssertEqual(found1, set<pair<Date,string>>{
+                {{2017,06,01}, "work"},
+                {{2017,06,02}, "work"},
+                {{2017,06,03}, "work"},
+                {{2017,06,04}, "work"},
+                {{2017,06,07}, "work"}
         }, "find case 1");
     }
     {
@@ -339,18 +347,18 @@ void TestDatabaseFind() {
             return event != "work";
         };
 
-        set<string> found1 = db.FindIf(predicate1);
-        AssertEqual(found1, set<string>{
-                {"2017-06-01 sleep"},
-                {"2017-06-02 sleep"},
-                {"2017-06-03 sleep"},
-                {"2017-06-04 sleep"},
-                {"2017-06-05 play computer games"},
-                {"2017-06-05 sleep"},
-                {"2017-06-06 visit parents"},
-                {"2017-06-06 sleep"},
-                {"2017-06-07 sleep"},
-                {"2017-06-08 sleep"}
+        set<pair<Date,string>> found1 = db.FindIf(predicate1);
+        AssertEqual(found1, set<pair<Date,string>>{
+                {{2017,6,1}, "sleep"},
+                {{2017,6,2}, "sleep"},
+                {{2017,6,3}, "sleep"},
+                {{2017,6,4}, "sleep"},
+                {{2017,6,5}, "play computer games"},
+                {{2017,6,5}, "sleep"},
+                {{2017,6,6}, "visit parents"},
+                {{2017,6,6}, "sleep"},
+                {{2017,6,7}, "sleep"},
+                {{2017,6,8}, "sleep"}
         }, "find case 2");
     }}
 
